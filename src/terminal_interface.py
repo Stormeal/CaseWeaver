@@ -1,8 +1,8 @@
 from assets.art import logo
 import os
 import keyboard
+import pandas as pd
 import datetime
-import csv
 
 menu_index: int = 0
 csv_file_path = "data/test_case_data.csv"
@@ -37,9 +37,9 @@ def initialize_tc_interface():
 
 def menu():
     print(
-        f"[1] Create a new Test Case | [2] Edit an existing Test Case | [3] Delete a Test Case | [4] Exit\n"
+        "[1] Create a new Test Case | [2] Edit an existing Test Case | [3] Delete a Test Case | [4] Exit\n"
     )
-    print(f"To return to this page, you can always press 'Home'")
+    print("To return to this page, you can always press 'Home'")
 
 
 def handle_input():
@@ -60,7 +60,7 @@ def menu_new_test_case():
     clear_screen()
     tc_title = str(
         input(
-            f"Test Case Title \nA short description of the test, e.g., 'Verify login functionality with valid credentials\n"
+            "Test Case Title \nA short description of the test, e.g., 'Verify login functionality with valid credentials\n"
         )
     )
 
@@ -80,54 +80,33 @@ def menu_new_test_case():
     expected_result: str = str(input("Expected Result: "))
     actual_result: str = str(input("Actual Result: "))
     test_status = ""
-    # created_time: datetime = datetime.now()
+    created_time = datetime.datetime.now()
     implemented_time = ""
     domain: str = str(input("Domain: "))
     label: str = str(input("Label: "))
 
-    headers = [
-        "Test Description",
-        "Requirement ID",
-        "Requirement Title",
-        "Acceptance Criteria ID",
-        "Acceptance Criteria Description",
-        "Preconditions",
-        "Test Type",
-        "Test Steps",
-        "Test Data",
-        "Expected Result",
-        "Actual Result",
-        "Test Status",
-        "Created Time",
-        "Implemented Time",
-        "Domain",
-        "Label",
-    ]
-
-    test_case_data = {
-        "Test Description": tc_desc,
-        "Requirement ID": tc_req_id,
-        "Requirement Title": tc_req_title,
-        "Acceptance Criteria ID": ac_id,
-        "Acceptance Criteria Description": ac_desc,
-        "Preconditions": str(tc_preconditions),
-        "Test Type": test_type,
-        "Test Steps": str(test_steps),
-        "Test Data": str(test_data),
-        "Expected Result": expected_result,
-        "Actual Result": actual_result,
-        "Test Status": test_status,
-        # "Created Time": created_time,
-        "Implemented Time": implemented_time,
-        "Domain": domain,
-        "Label": label,
+    data = {
+        "tc_desc": [tc_desc],
+        "tc_req_id": [tc_req_id],
+        "tc_req_title": [tc_req_title],
+        "ac_id": [ac_id],
+        "ac_desc": [ac_desc],
+        "tc_preconditions": [tc_preconditions],
+        "test_type": [test_type],
+        "test_steps": [test_steps],
+        "test_data": [test_data],
+        "expected_result": [expected_result],
+        "actual_result": [actual_result],
+        "test_status": [test_status],
+        "created_time": [created_time],
+        "implemented_time": [implemented_time],
+        "domain": [domain],
+        "label": [label],
     }
 
-    with open(csv_file_path, mode="a", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=headers)
-        if file.tell() == 0:
-            writer.writeheader()
-        writer.writerow(test_case_data)
+    df = pd.DataFrame(data)
+    os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
+    df.to_csv(csv_file_path, index=False)
 
     print(f"Test case data successfully saved to {csv_file_path}")
 
