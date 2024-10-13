@@ -69,39 +69,40 @@ else:
 
 def menu_new_test_case():
     clear_screen()
-    tc_title = str(
-        input(
-            "Test Case Title \nA short description of the test, e.g., 'Verify login functionality with valid credentials\n"
-        )
-    )
 
-    clear_screen()
+    data = handle_user_input()
+    df = convert_dict_to_dataframe(data)
+    create_csv_file(df)
+    print(f"Test case data successfully saved to {csv_file_path}")
 
-    # Generates a new unique ID for the current test case
+
+def handle_user_input():
+    """
+    Asks the user for input and returns a dictionary containing the test case data.
+    """
+
     tc_id: str = generate_test_case_id(current_count)
-
-    print(f"TC Title: {tc_title}")
+    tc_title = str(input("Test Case Title: "))
     tc_desc: str = str(input("Test Description: "))
     tc_req_id: str = str(input("Requirement ID: "))
     tc_req_title: str = str(input("Requirement title: "))
     ac_id: int = int(input("Acceptance Criteria ID: "))
     ac_desc: str = str(input("Acceptance Criteria Description: "))
     tc_preconditions: list = new_test_case_preconditions()
-    test_type: str = str(
-        input("Test Type (Ex: GUI, Acceptance, Integration etc.): ")
-    ).lower()
+    test_type: str = str(input("Test Type: ")).lower()
     test_steps: list = new_test_case_steps()
     test_data: dict = new_test_case_data()
     expected_result: str = str(input("Expected Result: "))
     actual_result: str = str(input("Actual Result: "))
     test_status = ""
-    created_time = datetime.datetime.now()
+    created_time = format_time(datetime.datetime.now())
     implemented_time = ""
     domain: str = str(input("Domain: "))
     label: str = str(input("Label: "))
 
     data = {
         "tc_id": [tc_id],
+        "tc_title": [tc_title],
         "tc_desc": [tc_desc],
         "tc_req_id": [tc_req_id],
         "tc_req_title": [tc_req_title],
@@ -120,16 +121,16 @@ def menu_new_test_case():
         "label": [label],
     }
 
-    df = convert_dict_to_dataframe(data)
-    create_csv_file(df)
-    print(f"Test case data successfully saved to {csv_file_path}")
+    return data
+
+
+def format_time(datetime):
+    return datetime.strftime("%d/%m/%Y - %H:%M")
 
 
 def new_test_case_preconditions():
     tc_preconditions: list = []
     new_precondition: bool = True
-
-    os.makedirs("data", exist_ok=True)
 
     print(
         "Please type each pre-condition for given test case, seperated by pressing enter. \nBy pressing enter without giving any input concludes the pre-conditions."
