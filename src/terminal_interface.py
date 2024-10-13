@@ -5,7 +5,7 @@ import pandas as pd
 import datetime
 
 menu_index: int = 0
-csv_file_path = "data/test_case_data.csv"
+csv_file_path = "src/data/test_case_data.csv"
 
 
 def clear_screen():
@@ -56,6 +56,17 @@ def handle_input():
             initialize_tc_interface()
 
 
+def generate_test_case_id(current_count):
+    return f"TC{current_count:03d}"
+
+
+if os.path.exists(csv_file_path):
+    existing_df = pd.read_csv(csv_file_path)
+    current_count = len(existing_df) + 1
+else:
+    current_count = 1
+
+
 def menu_new_test_case():
     clear_screen()
     tc_title = str(
@@ -65,6 +76,10 @@ def menu_new_test_case():
     )
 
     clear_screen()
+
+    # Generates a new unique ID for the current test case
+    tc_id: str = generate_test_case_id(current_count)
+
     print(f"TC Title: {tc_title}")
     tc_desc: str = str(input("Test Description: "))
     tc_req_id: str = str(input("Requirement ID: "))
@@ -86,15 +101,16 @@ def menu_new_test_case():
     label: str = str(input("Label: "))
 
     data = {
+        "tc_id": [tc_id],
         "tc_desc": [tc_desc],
         "tc_req_id": [tc_req_id],
         "tc_req_title": [tc_req_title],
         "ac_id": [ac_id],
         "ac_desc": [ac_desc],
-        "tc_preconditions": [tc_preconditions],
+        "tc_preconditions": [str(tc_preconditions)],
         "test_type": [test_type],
-        "test_steps": [test_steps],
-        "test_data": [test_data],
+        "test_steps": [str(test_steps)],
+        "test_data": [str(test_data)],
         "expected_result": [expected_result],
         "actual_result": [actual_result],
         "test_status": [test_status],
@@ -104,10 +120,8 @@ def menu_new_test_case():
         "label": [label],
     }
 
-    df = pd.DataFrame(data)
-    os.makedirs(os.path.dirname(csv_file_path), exist_ok=True)
-    df.to_csv(csv_file_path, index=False)
-
+    df = convert_dict_to_dataframe(data)
+    create_csv_file(df)
     print(f"Test case data successfully saved to {csv_file_path}")
 
 
@@ -128,7 +142,7 @@ def new_test_case_preconditions():
         else:
             tc_preconditions.append(precondition)
 
-    print(tc_preconditions)
+    return tc_preconditions
 
 
 def new_test_case_steps():
@@ -145,7 +159,8 @@ def new_test_case_steps():
             new_step = False
         else:
             tc_steps.append(step)
-    print(tc_steps)
+
+    return tc_steps
 
 
 def new_test_case_data():
@@ -168,4 +183,17 @@ def new_test_case_data():
             value = str(input(f"Value: {len(tc_data) + 1}: "))
             tc_data[key] = value
 
-    print(tc_data)
+    return tc_data
+
+
+def convert_dict_to_dataframe(data: dict):
+    # Converts the dictionary to DataFrame
+    df = pd.DataFrame(data)
+    return df
+
+
+def create_csv_file(dataframe):
+    if os.path.exists(csv_file_path):
+        dataframe.to_csv(csv_file_path, mode="a", header=False, index=False)
+    else:
+        dataframe.to_csv(csv_file_path, index=False)
