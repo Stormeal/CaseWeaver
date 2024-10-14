@@ -1,4 +1,0 @@
-tc_id,tc_title,tc_desc,tc_req_id,tc_req_title,ac_id,ac_desc,tc_preconditions,test_type,test_steps,test_data,expected_result,actual_result,test_status,created_time,implemented_time,domain,label
-TC001,Title,Description,1,Req Title,1,AC Descirption,"['PC 1', 'PC2']",gui,"['STEP!', 'STEP""']","{'username': 'john', 'password': 'very secure'}",this,that,,13/10/2024 - 14:20,,here,good
-TC002,Title,Desc,ReqID,Req Title,1,Desc,"['User must be logged in', 'User must be 2 cool 4 school']",gui,"['Login', 'Logout', 'Be 2 cool 4 school']","{'username': 'John', 'password': 'verysecure'}",This,That,,13/10/2024 - 19:48,,Prod,5
-TC003,1,1,1,1,1,1,"['1', '2']",1,"['1', '2']","{'1': '1', '2': '2'}",this,that,,13/10/2024 - 19:56,,here,good
