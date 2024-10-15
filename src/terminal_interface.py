@@ -1,21 +1,27 @@
-from assets.art import logo
 import os
 import keyboard
 import pandas as pd
 import datetime
 
+from assets.art import logo
+from helper.helper import convert_dict_to_dataframe, create_csv_file, format_time
+
 menu_index: int = 0
 csv_file_path = "src/data/test_case_data.csv"
 
 
-def clear_screen():
+def clear_screen(option: int):
     global menu_index
 
-    os.system("cls||clear")
-    print(logo)
-    if menu_index > 0:
-        print(current_menu(menu_index))
-        print("----------------------------------------------------")
+    match option:
+        case 1:
+            os.system("cls||clear")
+            print(logo)
+            if menu_index > 0:
+                print(current_menu(menu_index))
+                print("----------------------------------------------------")
+        case _:
+            return "Incorrect option"
 
 
 def current_menu(menu_index: int):
@@ -28,7 +34,7 @@ def current_menu(menu_index: int):
 
 def initialize_tc_interface():
     continue_terminal: bool = True
-    
+
     while continue_terminal:
         clear_screen()
         print(
@@ -127,10 +133,6 @@ def handle_user_input():
     return data
 
 
-def format_time(datetime):
-    return datetime.strftime("%d/%m/%Y - %H:%M")
-
-
 def new_test_case_preconditions():
     tc_preconditions: list = []
     new_precondition: bool = True
@@ -188,16 +190,3 @@ def new_test_case_data():
             tc_data[key] = value
 
     return tc_data
-
-
-def convert_dict_to_dataframe(data: dict):
-    # Converts the dictionary to DataFrame
-    df = pd.DataFrame(data)
-    return df
-
-
-def create_csv_file(dataframe):
-    if os.path.exists(csv_file_path):
-        dataframe.to_csv(csv_file_path, mode="a", header=False, index=False)
-    else:
-        dataframe.to_csv(csv_file_path, index=False)
