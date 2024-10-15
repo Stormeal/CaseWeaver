@@ -27,12 +27,15 @@ def current_menu(menu_index: int):
 
 
 def initialize_tc_interface():
-    clear_screen()
-    print(
-        "Welcome to ScriptWeaver, I'm here to help you create Test Cases for your projects!\nYou have a few options to choose from:"
-    )
-    menu()
-    handle_input()
+    continue_terminal: bool = True
+    
+    while continue_terminal:
+        clear_screen()
+        print(
+            "Welcome to ScriptWeaver, I'm here to help you create Test Cases for your projects!\nYou have a few options to choose from:"
+        )
+        menu()
+        handle_input()
 
 
 def menu():
