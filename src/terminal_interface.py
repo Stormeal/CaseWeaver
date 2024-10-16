@@ -16,7 +16,7 @@ tc_menu_index: int = 0
 
 
 def initialize_tc_interface():
-    clear_screen(1, menu_index, logo)
+    clear_screen(1, menu_index, tc_menu_index, logo)
     print(
         "Welcome to ScriptWeaver, I'm here to help you create Test Cases for your projects!\nYou have a few options to choose from:"
     )
@@ -45,7 +45,7 @@ def sub_menu():
     global tc_menu_index
 
     sub_menu_input = None
-    clear_screen(1,menu_index, logo)
+    clear_screen(1, menu_index, tc_menu_index, logo)
     if tc_menu_index == 0:
         sub_menu_input = str(
             input(
@@ -83,23 +83,24 @@ def menu_new_test_case(option: int):
     match option:
         case 1:
             csv_file_path = "src/data/test_case_data.csv"
-            clear_screen(1, menu_index, logo)
+            clear_screen(1, menu_index, tc_menu_index, logo)
             data = tc_handle_user_input(csv_file_path)
             wrap_csv(data, csv_file_path)
 
         case 2:
             csv_file_path = "src/data/ds_test_case_data.csv"
-            clear_screen(1, menu_index, logo)
+            clear_screen(1, menu_index, tc_menu_index, logo)
             data = ds_test_case()
             wrap_csv(data, csv_file_path)
-    
+
+
 def wrap_csv(data, csv_file_path):
     global menu_index, tc_menu_index
-    
+
     df = convert_dict_to_dataframe(data)
     create_csv_file(df, csv_file_path)
     csv_progress_bar(csv_file_path)
-    
+
     menu_index = 0
     tc_menu_index = 0
     initialize_tc_interface()

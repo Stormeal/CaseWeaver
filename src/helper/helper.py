@@ -3,13 +3,13 @@ import time
 import pandas as pd
 
 
-def clear_screen(option: int, menu_index, logo):
+def clear_screen(option: int, menu_index, tc_index, logo):
     match option:
         case 1:
             os.system("cls||clear")
             print(logo)
             if menu_index > 0:
-                print(current_menu(menu_index))
+                print(f"{current_menu(menu_index)} > {current_menu(tc_index)}")
                 print("----------------------------------------------------")
         case _:
             return "Incorrect option"
@@ -21,6 +21,15 @@ def current_menu(menu_index: int):
             return "Create a new Test Case"
         case _:
             return ""
+
+
+def current_menu(tc_index: int):
+
+    match tc_index:
+        case 1:
+            return "Default test case"
+        case 2:
+            return "DanskeSpil A/S test case"
 
 
 def format_time(datetime):
@@ -100,4 +109,4 @@ def csv_progress_bar(csv_file_path):
 
     print(f"Test case data successfully saved to {csv_file_path}")
 
-    time.sleep(1)
+    time.sleep(2)

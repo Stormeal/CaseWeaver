@@ -1,12 +1,13 @@
 import datetime
 
-from helper.helper import current_csv_count, format_time
+from helper.helper import clear_screen, current_csv_count, format_time
 from helper.test_case_helper import (
     generate_test_case_id,
     tc_data,
     tc_preconditions,
     tc_steps,
 )
+from assets.art import logo
 
 
 def tc_handle_user_input(csv_file_path):
@@ -15,6 +16,7 @@ def tc_handle_user_input(csv_file_path):
     """
 
     tc_id: str = generate_test_case_id(current_csv_count(csv_file_path))
+    print(f"ID: {tc_id}")
     tc_title = str(input("Test Case Title: "))
     tc_desc: str = str(input("Test Description: "))
     tc_req_id: str = str(input("Requirement ID: "))
@@ -64,6 +66,7 @@ def ds_test_case():
     csv_file_path = "src/data/ds_test_case_data.csv"
 
     tc_id: str = generate_test_case_id(current_csv_count(csv_file_path))
+    print(f"ID: {tc_id}")
     tc_summary = str(input("Summary: "))
     tc_desc: str = str(input("Description: "))
     test_steps: list = tc_steps()
