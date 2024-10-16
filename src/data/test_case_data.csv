@@ -1,3 +1,0 @@
-tc_id,tc_title,tc_desc,tc_req_id,tc_req_title,ac_id,ac_desc,tc_preconditions,test_type,test_steps,test_data,expected_result,actual_result,test_status,created_time,implemented_time,domain,label
-TC001,Title,Test Description,Requirement 1,Requirement Title,1,1,"['User must be logged in', 'Have a valid email ']",gui,"['Login', ""Don't be fooled by logout button""]","{'username': 'john', 'password': 'verysecure'}",This,That,,14/10/2024 - 10:35,,Here,5
-TC002,title,des,1,2,3,3,"['1', '1', '2']",gui,"['1', '1']","{'username': 'Alex', 'password': 'notsecure'}",thios,that,,15/10/2024 - 10:26,,domain,1
