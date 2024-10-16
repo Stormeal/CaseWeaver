@@ -35,7 +35,7 @@ def tc_steps():
         else:
             tc_steps.append(step)
 
-    return tc_steps
+    return [step for step in tc_steps if step.strip()]
 
 
 def tc_data():

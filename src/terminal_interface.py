@@ -2,6 +2,9 @@ import os
 import keyboard
 import pandas as pd
 
+if os.name == "nt":
+    import msvcrt
+
 from assets.art import logo
 from helper.helper import (
     clear_screen,
@@ -23,6 +26,12 @@ def initialize_tc_interface():
     menu()
 
 
+def get_keypress():
+    if os.name == "nt":
+        key = msvcrt.getch()
+        return key.decode("utf-8") if isinstance(key, bytes) else key
+
+
 def menu():
     global menu_index
     if menu_index == 0:
@@ -32,45 +41,35 @@ def menu():
         print("To return to this page, you can always press 'Home'")
 
         while menu_index == 0:
-            if keyboard.is_pressed("1"):
+            key = get_keypress()
+            if key == "1":
                 menu_index = 1
                 sub_menu()
-            elif keyboard.is_pressed("4"):
+            elif key == "4":
                 exit()
-            elif keyboard.is_pressed("Home"):
+            elif key == "Home":
                 initialize_tc_interface()
 
 
 def sub_menu():
     global tc_menu_index
 
-    sub_menu_input = None
+    sub_menu_input = ""
     clear_screen(1, menu_index, tc_menu_index, logo)
-    if tc_menu_index == 0:
-        sub_menu_input = str(
-            input(
-                "[1] Create a new Test Case | [2] DanskeSpil A/S - Test Case | [4] Return to Main Menu: "
-            )
-        )
 
-    try:
-        sub_menu_input = int(sub_menu_input)  # Convert input to integer
-    except ValueError:
-        print("Invalid input, returning to the home page.")
-        initialize_tc_interface()
-        return  # Exit the function if input is invalid
+    print(
+        "[1] Create a new Test Case | [2] DanskeSpil A/S - Test Case | [4] Return to Main Menu"
+    )
 
-    match sub_menu_input:
-        case 1:
+    while tc_menu_index == 0:
+        key = get_keypress()
+        if key == "1":
             tc_menu_index = 1
             menu_new_test_case(1)
-        case 2:
+        elif key == "2":
             tc_menu_index = 2
             menu_new_test_case(2)
-        case 4:
-            initialize_tc_interface()
-        case _:
-            print("Unknown command, returning to home page")
+        elif key == "4":
             initialize_tc_interface()
 
 
